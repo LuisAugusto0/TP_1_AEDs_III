@@ -310,8 +310,8 @@ public class HashExtensivelLixo <T extends RegistroHashExtensivel>{
     c.fromByteArray(ba);
 
     // Testa se a chave já não existe no cesto
-    if (c.read(elem.hashCode()) != null)
-      throw new Exception("Elemento já existe");
+    // if (c.read(elem.hashCode()) != null)
+    //   throw new Exception("Elemento já existe");  //não funciona
 
     // Testa se o cesto já não está cheio
     // Se não estiver, create o par de chave e dado

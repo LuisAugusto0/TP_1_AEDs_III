@@ -107,7 +107,7 @@ public class Arquivo<T extends Registro> {
     byte[] ba, ba2;
     ParIDEndereco pie = indiceDireto.read(novoObj.getID());
     long endereco = pie != null ? pie.getEndereco() : -1;
-
+    
     if (endereco != -1) {
       arquivo.seek(endereco + 1); // pula o campo lápide
       tam = arquivo.readShort();
@@ -120,12 +120,32 @@ public class Arquivo<T extends Registro> {
         arquivo.seek(endereco + 1 + 2);
         arquivo.write(ba2);
       } else {
+        long endereco2;
         arquivo.seek(endereco);
+        
         arquivo.writeByte('*');
-        arquivo.seek(arquivo.length());
-        long endereco2 = arquivo.getFilePointer();
-        arquivo.writeByte(' ');
-        arquivo.writeShort(tam2);
+        short tamLixo = arquivo.readShort();
+
+        System.out.println('\n' + "Lixo adicionado com endereço " + endereco + " e tamanho " + tamLixo);
+        indiceLixo.create(new ParTamEndereco(tamLixo, endereco));
+
+        ParTamEndereco busca = indiceLixo.read((int)tam2);
+        if(busca == null){
+          arquivo.seek(arquivo.length());
+          endereco2 = arquivo.getFilePointer();
+          arquivo.writeByte(' '); // lápide
+          arquivo.writeShort(tam2);
+        }
+        else {
+          arquivo.seek(busca.getEndereco());
+          endereco2 = arquivo.getFilePointer();
+          arquivo.writeByte(' '); // lápide
+          // arquivo.skipBytes(2);
+          short tamAntigo = arquivo.readShort();
+          indiceLixo.delete(tamAntigo);
+          System.out.println("Endereco " + endereco2 + " excluido do hash de lixo. \nTamanho anterior: " + tamAntigo + "\tNovo tamanho: " + tam2);
+        }
+        System.out.println("Objeto atualizado. Endereço antigo " + endereco + ". Endereço novo " + endereco2); 
         arquivo.write(ba2);
         indiceDireto.update(new ParIDEndereco(novoObj.getID(), endereco2));
       }
