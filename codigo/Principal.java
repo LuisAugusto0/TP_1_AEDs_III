@@ -24,66 +24,37 @@ class Principal {
       arqLivros = new Arquivo<>("livros", Livro.class.getConstructor());
 
       id1 = arqLivros.create(l1);
-      System.out.println("Livro criado com o ID: " + id1);
 
       id3 = arqLivros.create(l3);
-      System.out.println("Livro criado com o ID: " + id3);
 
       id4 = arqLivros.create(l4);
-      System.out.println("Livro criado com o ID: " + id4);
 
-      if (arqLivros.delete(id3))
-        System.out.println("Livro de ID " + id3 + " excluído!");
-      else
-        System.out.println("Livro de ID " + id3 + " não encontrado!");
-
-
-      // if (arqLivros.delete(id4))
-      //   System.out.println("Livro de ID " + id4 + " excluído!");
-      // else
-      //   System.out.println("Livro de ID " + id4 + " não encontrado!");
-
-      
+      System.out.println(arqLivros.delete(id3) ? "Livro excluído" : "Livro não encontrado!");
 
       l4.setTitulo("A Memória");
-      if (arqLivros.update(l4))
-        System.out.println("Livro de ID " + l4.getID() + " alterado!");
-      else
-        System.out.println("Livro de ID " + l4.getID() + " não encontrado!");
+      System.out.println(arqLivros.update(l4) ? "Livro alterado" : "Livro não encontrado!");
 
-      // arqLivros.reorganizar();
-
-      if (arqLivros.delete(id3))
-        System.out.println("Livro de ID " + id3 + " excluído!");
-      else
-        System.out.println("Livro de ID " + id3 + " não encontrado!");
+      System.out.println(arqLivros.delete(id3) ? "Livro excluído" : "Livro não encontrado!");
       
-        if (arqLivros.delete(id4))
-        System.out.println("Livro de ID " + id4 + " excluído!");
-      else
-        System.out.println("Livro de ID " + id4 + " não encontrado!");
-      
-        if (arqLivros.delete(id1))
-        System.out.println("Livro de ID " + id1 + " excluído!");
-      else
-        System.out.println("Livro de ID " + id1 + " não encontrado!");
+      System.out.println(arqLivros.delete(id4) ? "Livro excluído" : "Livro não encontrado!");
 
-        id1 = arqLivros.create(l1);
-        System.out.println("Livro criado com o ID: " + id1);
-  
-        id3 = arqLivros.create(l3);
-        System.out.println("Livro criado com o ID: " + id3);
-  
-        id4 = arqLivros.create(l4);
-        System.out.println("Livro criado com o ID: " + id4);
-      
+      System.out.println(arqLivros.delete(id1) ? "Livro excluído" : "Livro não encontrado!");
 
-      System.out.println("\nLivro 1:\n" + arqLivros.read(1));
-      System.out.println("\nLivro 2:\n" + arqLivros.read(2));
-      System.out.println("\nLivro 3:\n" + arqLivros.read(3));
-      System.out.println("\nLivro 4:\n" + arqLivros.read(4));
-      System.out.println("\nLivro 5:\n" + arqLivros.read(5));
-      System.out.println("\nLivro 6:\n" + arqLivros.read(6));
+      id1 = arqLivros.create(l1);
+
+      id2 = arqLivros.create(l2);
+        
+      id3 = arqLivros.create(l3);
+
+      id4 = arqLivros.create(l4);
+        
+      id5 = arqLivros.create(l5);
+
+      System.out.println("Livro 1:\n" + arqLivros.read(id1));
+      System.out.println("Livro 2:\n" + arqLivros.read(id2));
+      System.out.println("Livro 3:\n" + arqLivros.read(id3));
+      System.out.println("Livro 4:\n" + arqLivros.read(id4));
+      System.out.println("Livro 5:\n" + arqLivros.read(id5));
 
       arqLivros.close();
 

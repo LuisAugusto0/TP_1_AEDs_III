@@ -40,6 +40,7 @@ public class Arquivo<T extends Registro> {
     arquivo.seek(0);
     int ultimoID = arquivo.readInt();
     ultimoID++;
+    System.out.println("\n---------------------- CREATE ID " + ultimoID + " ----------------------\n");
     arquivo.seek(0);
     arquivo.writeInt(ultimoID);
     obj.setID(ultimoID);
@@ -60,15 +61,18 @@ public class Arquivo<T extends Registro> {
       // arquivo.skipBytes(2);
       short tamAntigo = arquivo.readShort();
       indiceLixo.delete(tamAntigo);
-      System.out.println("\nEndereco " + endereco + " excluido do hash de lixo. \nTamanho anterior: " + tamAntigo + "\tNovo tamanho: " + tam);
+      System.out.println("Endereco " + endereco + " excluido do hash de lixo e reutilizado.\n" + 
+                          "Tamanho antigo " + tamAntigo + ". Tamanho do objeto inserido: " + tam + ".\n"+
+                          "Percentagem de lixo: " +  (100 - (float)(tam*100/tamAntigo)) + "%.");
     }
     arquivo.write(ba);
     indiceDireto.create(new ParIDEndereco(obj.getID(), endereco));
-    System.out.println('\n'+"Objeto criado no endereço " + endereco + " e tamanho " + tam);
+    System.out.println("Objeto copiado no endereço " + endereco + " possuindo tamanho total " + tam);
     return obj.getID();
   }
 
   public T read(int id) throws Exception {
+    System.out.println("\n---------------------- READ ID " + id + " ----------------------\n");
     T obj = construtor.newInstance();
     short tam;
     byte[] ba;
@@ -87,6 +91,7 @@ public class Arquivo<T extends Registro> {
   }
 
   public boolean delete(int id) throws Exception {
+    System.out.println("\n---------------------- DELETE ID " + id + " ----------------------\n");
     ParIDEndereco pie = indiceDireto.read(id);
     long endereco = pie != null ? pie.getEndereco() : -1;
     if (endereco != -1) {
@@ -94,7 +99,7 @@ public class Arquivo<T extends Registro> {
       arquivo.writeByte('*');
       short tam = arquivo.readShort();
       indiceLixo.create(new ParTamEndereco(tam, endereco));
-      System.out.println('\n' + "Lixo adicionado com endereço " + endereco + " e tamanho " + tam);
+      System.out.println("Endereço " + endereco + " adicionado como lixo de tamanho " + tam);
       indiceDireto.delete(id);
       return true;
     } else
@@ -102,6 +107,7 @@ public class Arquivo<T extends Registro> {
   }
 
   public boolean update(T novoObj) throws Exception {
+    System.out.println("\n---------------------- UPDATE ID " + novoObj.getID() + " ----------------------\n");
     T obj = construtor.newInstance();
     short tam, tam2;
     byte[] ba, ba2;
@@ -126,7 +132,7 @@ public class Arquivo<T extends Registro> {
         arquivo.writeByte('*');
         short tamLixo = arquivo.readShort();
 
-        System.out.println('\n' + "Lixo adicionado com endereço " + endereco + " e tamanho " + tamLixo);
+        System.out.println("Endereço " + endereco + " adicionado como lixo de tamanho " + tamLixo);
         indiceLixo.create(new ParTamEndereco(tamLixo, endereco));
 
         ParTamEndereco busca = indiceLixo.read((int)tam2);
@@ -143,9 +149,11 @@ public class Arquivo<T extends Registro> {
           // arquivo.skipBytes(2);
           short tamAntigo = arquivo.readShort();
           indiceLixo.delete(tamAntigo);
-          System.out.println("Endereco " + endereco2 + " excluido do hash de lixo. \nTamanho anterior: " + tamAntigo + "\tNovo tamanho: " + tam2);
+          System.out.println("Endereco " + endereco2 + " excluido do hash de lixo e reutilizado.\n" +
+                             "Tamanho: " + tamAntigo + ". Tamanho do objeto inserido: " + tam2 + ".\n" +
+                             "Percentagem de lixo: " + ( 100 - (float) tam2*100/tamAntigo ) + "%." );
         }
-        System.out.println("Objeto atualizado. Endereço antigo " + endereco + ". Endereço novo " + endereco2); 
+        System.out.println("Endereço antigo " + endereco + ". Endereço novo " + endereco2); 
         arquivo.write(ba2);
         indiceDireto.update(new ParIDEndereco(novoObj.getID(), endereco2));
       }
