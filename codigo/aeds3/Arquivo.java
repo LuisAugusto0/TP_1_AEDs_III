@@ -19,19 +19,21 @@ public class Arquivo<T extends Registro> {
   protected Constructor<T> construtor;
   final protected int TAM_CABECALHO = 4;
   protected HashExtensivel<ParIDEndereco> indiceDireto;
+  protected HashExtensivelLixo<ParTamEndereco> indiceLixo;
 
   public Arquivo(String na, Constructor<T> c) throws Exception {
     this.nomeEntidade = na;
     this.construtor = c;
-    arquivo = new RandomAccessFile("dados/" + na + ".db", "rw");
+    arquivo = new RandomAccessFile("codigo/dados/" + na + ".db", "rw");
     if (arquivo.length() < TAM_CABECALHO) {
       arquivo.seek(0);
       arquivo.writeInt(0);
     }
     indiceDireto = new HashExtensivel<>(ParIDEndereco.class.getConstructor(),
         3,
-        "dados/" + na + ".hash_d.db",
-        "dados/" + na + ".hash_c.db");
+        "codigo/dados/" + na + ".hash_d.db",
+        "codigo/dados/" + na + ".hash_c.db");
+    indiceLixo = new HashExtensivelLixo<>(ParTamEndereco.class.getConstructor(), 3, "codigo/dados/" + na + ".hash_lixo_d.db", "codigo/dados/" + na + ".hash_lixo_c.db");
   }
 
   public int create(T obj) throws Exception {
@@ -77,6 +79,8 @@ public class Arquivo<T extends Registro> {
     if (endereco != -1) {
       arquivo.seek(endereco);
       arquivo.writeByte('*');
+      short tam = arquivo.readShort();
+      indiceLixo.create(new ParTamEndereco(tam, endereco));
       indiceDireto.delete(id);
       return true;
     } else

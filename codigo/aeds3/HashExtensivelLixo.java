@@ -1,18 +1,6 @@
-/*
-TABELA HASH EXTENSÍVEL
-
-Os nomes dos métodos foram mantidos em inglês
-apenas para manter a coerência com o resto da
-disciplina:
-- boolean create(T elemento)
-- long read(int hashcode)
-- boolean update(T novoElemento)   //  a chave (hashcode) deve ser a mesma
-- boolean delete(int hashcode)
-
-Implementado pelo Prof. Marcos Kutova
-v1.1 - 2021
-*/
 package aeds3;
+
+import java.lang.reflect.Constructor;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,10 +9,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.lang.reflect.Constructor;
 
-public class HashExtensivel<T extends RegistroHashExtensivel> {
 
+public class HashExtensivelLixo <T extends RegistroHashExtensivel>{
+    
   String nomeArquivoDiretorio;
   String nomeArquivoCestos;
   RandomAccessFile arqDiretorio;
@@ -117,7 +105,7 @@ public class HashExtensivel<T extends RegistroHashExtensivel> {
       int i = 0;
       while (i < quantidade && chave > elementos.get(i).hashCode())
         i++;
-      if (i < quantidade && chave == elementos.get(i).hashCode()) // if (i < quantidade && chave >= elementos.get(i).hashCode() * 40/100.0)
+      if (i < quantidade && chave >= elementos.get(i).hashCode() * 40/100.0)//   if (i < quantidade && chave == elementos.get(i).hashCode())
         return elementos.get(i);
       else
         return null;
@@ -274,7 +262,7 @@ public class HashExtensivel<T extends RegistroHashExtensivel> {
 
   }
 
-  public HashExtensivel(Constructor<T> ct, int n, String nd, String nc) throws Exception {
+  public HashExtensivelLixo(Constructor<T> ct, int n, String nd, String nc) throws Exception {
     construtor = ct;
     quantidadeDadosPorCesto = n;
     nomeArquivoDiretorio = nd;

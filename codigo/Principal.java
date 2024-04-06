@@ -6,9 +6,11 @@ class Principal {
 
   public static void main(String args[]) {
 
-    new File("dados/livros.db").delete();
-    new File("dados/livros.hash_d.db").delete();
-    new File("dados/livros.hash_c.db").delete();
+    new File("codigo/dados/livros.db").delete();
+    new File("codigo/dados/livros.hash_d.db").delete();
+    new File("codigo/dados/livros.hash_c.db").delete();
+    new File("codigo/dados/livros.hash_lixo_d.db").delete();
+    new File("codigo/dados/livros.hash_lixo_c.db").delete();
 
     Arquivo<Livro> arqLivros;
     Livro l1 = new Livro(-1, "9788563560278", "Odisseia", 15.99F);
@@ -27,32 +29,32 @@ class Principal {
       id2 = arqLivros.create(l2);
       System.out.println("Livro criado com o ID: " + id2);
 
-      id3 = arqLivros.create(l3);
-      System.out.println("Livro criado com o ID: " + id3);
+      //id3 = arqLivros.create(l3);
+      // System.out.println("Livro criado com o ID: " + id3);
 
-      id4 = arqLivros.create(l4);
-      System.out.println("Livro criado com o ID: " + id4);
+      //id4 = arqLivros.create(l4);
+      // System.out.println("Livro criado com o ID: " + id4);
 
-      id5 = arqLivros.create(l5);
-      System.out.println("Livro criado com o ID: " + id5);
+      //id5 = arqLivros.create(l5);
+      // System.out.println("Livro criado com o ID: " + id5);
 
-      if (arqLivros.delete(id2))
-        System.out.println("Livro de ID " + id2 + " excluído!");
+      if (arqLivros.delete(id1))
+        System.out.println("Livro de ID " + id1 + " excluído!");
       else
-        System.out.println("Livro de ID " + id2 + " não encontrado!");
+        System.out.println("Livro de ID " + id1 + " não encontrado!");
 
-      l4.setTitulo("A Memória");
-      if (arqLivros.update(l4))
-        System.out.println("Livro de ID " + l4.getID() + " alterado!");
-      else
-        System.out.println("Livro de ID " + l4.getID() + " não encontrado!");
+      // l4.setTitulo("A Memória");
+      // if (arqLivros.update(l4))
+      //   System.out.println("Livro de ID " + l4.getID() + " alterado!");
+      // else
+      //   System.out.println("Livro de ID " + l4.getID() + " não encontrado!");
 
-      arqLivros.reorganizar();
+      // arqLivros.reorganizar();
 
-      System.out.println("\nLivro 3:\n" + arqLivros.read(3));
+      // System.out.println("\nLivro 3:\n" + arqLivros.read(3));
       System.out.println("\nLivro 1:\n" + arqLivros.read(1));
-      System.out.println("\nLivro 5:\n" + arqLivros.read(5));
-      System.out.println("\nLivro 4:\n" + arqLivros.read(4));
+      // System.out.println("\nLivro 5:\n" + arqLivros.read(5));
+      // System.out.println("\nLivro 4:\n" + arqLivros.read(4));
       System.out.println("\nLivro 2:\n" + arqLivros.read(2));
 
       arqLivros.close();
