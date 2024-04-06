@@ -43,15 +43,28 @@ public class Arquivo<T extends Registro> {
     arquivo.seek(0);
     arquivo.writeInt(ultimoID);
     obj.setID(ultimoID);
-
-    arquivo.seek(arquivo.length());
-    long endereco = arquivo.getFilePointer();
     byte[] ba = obj.toByteArray();
     short tam = (short) ba.length;
-    arquivo.writeByte(' '); // lápide
-    arquivo.writeShort(tam);
+    ParTamEndereco busca = indiceLixo.read((int)tam);
+    long endereco;
+    if(busca == null){
+      arquivo.seek(arquivo.length());
+      endereco = arquivo.getFilePointer();
+      arquivo.writeByte(' '); // lápide
+      arquivo.writeShort(tam);
+    }
+    else {
+      arquivo.seek(busca.getEndereco());
+      endereco = arquivo.getFilePointer();
+      arquivo.writeByte(' '); // lápide
+      // arquivo.skipBytes(2);
+      short tamAntigo = arquivo.readShort();
+      indiceLixo.delete(tamAntigo);
+      System.out.println("\nEndereco " + endereco + " excluido do hash de lixo. \nTamanho anterior: " + tamAntigo + "\tNovo tamanho: " + tam);
+    }
     arquivo.write(ba);
     indiceDireto.create(new ParIDEndereco(obj.getID(), endereco));
+    System.out.println('\n'+"Objeto criado no endereço " + endereco + " e tamanho " + tam);
     return obj.getID();
   }
 
@@ -81,6 +94,7 @@ public class Arquivo<T extends Registro> {
       arquivo.writeByte('*');
       short tam = arquivo.readShort();
       indiceLixo.create(new ParTamEndereco(tam, endereco));
+      System.out.println('\n' + "Lixo adicionado com endereço " + endereco + " e tamanho " + tam);
       indiceDireto.delete(id);
       return true;
     } else
