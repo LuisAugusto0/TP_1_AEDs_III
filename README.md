@@ -49,6 +49,6 @@ Os resultados como um todo foram alcançados em partes, visto que o gerenciament
 
 <pre> Sim, o trabalho está completo. </pre>
 
-#### O trabalho é original e não a cópia de um trabalho de um colega?
+#### - O trabalho é original e não a cópia de um trabalho de um colega?
 
 <pre> Sim, o trabalho foi implemetado usando código desenvolvido pelo grupo utilizando apenas a base disponibilizada pelo Professor no Canvas. </pre>
